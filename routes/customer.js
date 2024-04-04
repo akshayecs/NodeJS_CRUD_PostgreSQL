@@ -6,7 +6,7 @@ const customerController = require("../controller/customer");
 
 
 // Apply the verifyTokenAndRole middleware to restrict access to these routes
-// router.use(verifyTokenAndRole);
+router.use(verifyTokenAndRole);
 
 router.route("/")
     .post(customerController.createCustomer)
@@ -15,7 +15,7 @@ router.route("/")
 router.route("/:id")
     .get(customerController.getCustomerById)
     .put(customerController.updateCustomer)
-    .delete(verifyTokenAndRole,customerController.deleteCustomer);
+    .delete(customerController.deleteCustomer);
 
 router.route("/create-multiple").post(customerController.createMultipleCustomer);
 

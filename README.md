@@ -4,17 +4,33 @@ clone the repository
 
 npm i
 
-register
+1)register
 http://localhost:3000/user/register
-login
+
+payload:
+//you can give any role out of this three manager,editor,viewer(make sure to write in the small latters only) 
+{
+    "username":"dfdf",
+    "email":"gdffdfdgfg@gmail.com",
+    "password":"pavan123",
+    "role":"manager"
+}
+
+
+2)login
 http://localhost:3000/user/login
 
+payload:
+{
+   "email":"gdffdfdgfg@gmail.com",
+    "password":"pavan123"
+}
 (gives token)
 
 
-Main Task :
+CRUD :
 
-createCustomer:post
+createCustomer:POST
 http://localhost:3000/customer/
 
 payload:
@@ -25,24 +41,28 @@ payload:
     "company":"xyz"
 }
 
-getAllCustomer:get
+getAllCustomer:GET
 http://localhost:3000/customer/
 
 payload:
+(Note:you can search with first_name,last_name or city of the customer)
 {
-    "search_text":null,
+    "search_text":"Akshay",
     "skip":0,
     "take":20
 }
 
 
-getCustoemrById:get
+getCustoemrById:GET
+(Note:pass the customer_id as the parameter in the url)
 http://localhost:3000/customer/56a2ba0a-1882-4973-9df2-b93c94242486
 
 
 
-createMultipleCustomer:post
+createMultipleCustomer:POST
 http://localhost:3000/customer/create-multiple
+
+(Note:make sure you will pass the array of customer details as given below)
 
 payload:
 {
@@ -68,28 +88,24 @@ payload:
 ]
 }
 
-updateCustomer:put
-
+updateCustomer:PUT
+(Note:pass the customer_id as the parameter in the url)
 http://localhost:3000/customer/56a2ba0a-1882-4973-9df2-b93c94242486
 
 payload:
 {
     "first_name":"newOne",
     "last_name":"surti",
-    "city":"Dabng",
+    "city":"Dang",
     "company":"xyz"
 }
 
 
-
-Now With the authorization:
-
-delete the Customer:PUT
+delete the Customer:DELETE
 
 http://localhost:3000/customer/56a2ba0a-1882-4973-9df2-b93c94242486
 
 using the authorization middleware
-
 
 
 

@@ -22,12 +22,7 @@ const verifyTokenAndRole = (req, res, next) => {
         console.log(err);
         return res.status(403).send("Could not verify token");
       }
-      if(user.role === "manager"){
-        req.userInfo.is_authorized = true
-      }
-      else{
-        req.userInfo.is_authorized = false
-      }
+        req.userInfo = user;
     });
     next();
   };

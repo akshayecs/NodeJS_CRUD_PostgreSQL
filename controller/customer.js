@@ -31,6 +31,7 @@ const createCustomer = async (req, res) => {
                 city: req.body.city,
                 company: req.body.company
             },
+            role:req.userInfo.role,
             dbClient: req.dbClient
         }
         const response = await handleCreateCustomer(args);
@@ -62,6 +63,7 @@ const getAllCustomer = async (req, res) => {
                 skip: req.body.skip,
                 take: req.body.take
             },
+            role:req.userInfo.role,
             dbClient: req.dbClient
         }
 
@@ -92,6 +94,7 @@ const getCustomerById = async (req, res) => {
             data: {
                 customer_id: req.body.customer_id
             },
+            role:req.userInfo.role,
             dbClient: req.dbClient
         }
 
@@ -127,6 +130,7 @@ const createMultipleCustomer = async (req, res) => {
             data: {
                 customers: req.body.customerArray
             },
+            role:req.userInfo.role,
             dbClient: req.dbClient
         }
 
@@ -166,6 +170,7 @@ const updateCustomer = async (req, res) => {
                 city: req.body.city,
                 company: req.body.company
             },
+            role:req.userInfo.role,
             dbClient: req.dbClient
         }
         const response = await handleUpdateCustomer(args);
@@ -194,7 +199,7 @@ const deleteCustomer = async (req, res) => {
             data: {
                 customer_id: req.body.customer_id
             },
-            is_authorized:req.userInfo.is_authorized,
+            role:req.userInfo.role,
             dbClient: req.dbClient
         }
         const response = await handleDeleteCustomer(args);

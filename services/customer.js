@@ -1,20 +1,14 @@
 const { response, query } = require('express');
-const { Pool } = require('pg')
-const pool = new Pool({
-    user: '***',
-    host: 'localhost',
-    database: 'your_database_name',
-    password: 'your_password',
-    port: 5432,
-    max:20,
-    idleTimeoutMillis:30000,
-});
+const {USER_ROLES} = require('../commonFunction/config');
 
 const handleCreateCustomer = async(args) => {
     const {dbClient} = args;
     try {
         const {first_name,last_name,city,company} = args.data;
-
+        const {role} = args;
+        if(role !== USER_ROLES.MANAGER && role !== USER_ROLES.EDITOR){
+            return { status: 401, message: "You are Unauthorized to act this!", data: null };
+        }
         const {rows:customerData} = await dbClient.query(
             `INSERT INTO customer(first_name,last_name,city,company) VALUES($1,$2,$3,$4) RETURNING *`,
             [first_name,last_name,city,company]
@@ -88,7 +82,11 @@ const handleCreateMultipleCustomer = async(args) => {
     const {dbClient} = args;
     try {
         const {customers} = args.data;
+        const {role} = args;
 
+        if(role !== USER_ROLES.MANAGER && role !== USER_ROLES.EDITOR){
+            return { status: 401, message: "You are Unauthorized to act this!", data: null };
+        }
         let insertedCustomers = [];
 
         await dbClient.query('BEGIN');
@@ -115,7 +113,11 @@ const handleUpdateCustomer = async(args) => {
     const {dbClient} = args;
     try {
         const {customer_id,first_name,last_name,city,company} = args.data;
+        const {role} = args;
 
+        if(role !== USER_ROLES.MANAGER && role !== USER_ROLES.EDITOR){
+            return { status: 401, message: "You are Unauthorized to act this!", data: null };
+        }
         const {rows:checkIfCustomerExist} = await dbClient.query(
             `SELECT * FROM customer WHERE customer_id= $1`,
             [customer_id]
@@ -145,9 +147,9 @@ const handleDeleteCustomer = async (args) => {
     const {dbClient} = args;
     try {
         const { customer_id } = args.data;
-        const {is_authorized} = args;
+        const {role} = args;
 
-        if(!is_authorized){
+        if(role !== USER_ROLES.MANAGER){
             return { status: 401, message: "You are Unauthorized to act this!", data: null };
         }
 

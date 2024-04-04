@@ -40,7 +40,6 @@ router.post('/register', async (req, res) => {
 router.get('/login', async (req, res) => {
     const {dbClient} = req;
     try {
-        console.log("coming");
         const { email, password } = req.body;
 
         const {rows:userExist} = await dbClient.query(
