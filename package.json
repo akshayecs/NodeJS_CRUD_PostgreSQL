@@ -1,5 +1,5 @@
 {
-  "name": "sublimedatasystemtask",
+  "name": "nodejs_CRUD_APP",
   "version": "1.0.0",
   "description": "this is a Simple nodejs app that accept and return the customer data from postgresql",
   "main": "index.js",

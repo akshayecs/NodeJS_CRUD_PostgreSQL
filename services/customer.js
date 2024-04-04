@@ -20,7 +20,6 @@ const handleCreateCustomer = async(args) => {
             [first_name,last_name,city,company]
         );
 
-        console.log(">>>>>>>>>>customerData",customerData);
             let responseData = {
                 status:200,
                 message:"customer added successfully",
@@ -145,7 +144,8 @@ const handleUpdateCustomer = async(args) => {
 const handleDeleteCustomer = async (args) => {
     const {dbClient} = args;
     try {
-        const { customer_id,is_authorized } = args.data;
+        const { customer_id } = args.data;
+        const {is_authorized} = args;
 
         if(!is_authorized){
             return { status: 401, message: "You are Unauthorized to act this!", data: null };

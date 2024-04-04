@@ -1,36 +1,35 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const connectDB = require('../middleware/connectDB')
+
 
 const verifyTokenAndRole = (req, res, next) => {
-    console.log("Coming");
-    const token = req.headers['authorization'];
-    // Ensure the token starts with 'Bearer ' and then extract the token value
-    if (!token || !token.startsWith('Bearer ')) {
-        return res.status(401).json({ message: 'Unauthorized: Token Not Found' });
-    }
-    
-    // Check if token is provided
+    const authHeader = req.headers["authorization"];
+  
+    //Extracting token from authorization header
+    const token = authHeader && authHeader.split(" ")[1];
+  
+    //Checking if the token is null
     if (!token) {
-        return res.status(401).json({ message: 'Unauthorized: Token Not Found' });
+      return res.status(401).send("Authorization failed. No Token Found.");
     }
-    // Decode the token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ['RS256'] }); // Assuming RS256
-
-    // Validate claims (optional)
-    if (decoded.exp < Date.now() / 1000) { // Check for expiration
-      throw new Error('Token has expired');
+  
+    if (!req.userInfo) {
+        req.userInfo = {};
     }
-    // Check if user has required role
-    if (decoded.role === 'Manager') {
-        req.body.is_authorized = true; // Set is_authorized to true if role is Manager
-    } else {
-        req.body.is_authorized = false; // Set is_authorized to false for other roles
-    }
+    //Verifying if the token is valid.
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) {
+        console.log(err);
+        return res.status(403).send("Could not verify token");
+      }
+      if(user.role === "manager"){
+        req.userInfo.is_authorized = true
+      }
+      else{
+        req.userInfo.is_authorized = false
+      }
+    });
     next();
-};
-
-
-
+  };
 
 module.exports = verifyTokenAndRole;

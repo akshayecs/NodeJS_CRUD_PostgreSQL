@@ -192,9 +192,9 @@ const deleteCustomer = async (req, res) => {
 
         const args = {
             data: {
-                customer_id: req.body.customer_id,
-                is_authorized:req.body.is_authorized
+                customer_id: req.body.customer_id
             },
+            is_authorized:req.userInfo.is_authorized,
             dbClient: req.dbClient
         }
         const response = await handleDeleteCustomer(args);
