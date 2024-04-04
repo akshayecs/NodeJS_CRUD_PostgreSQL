@@ -1,9 +1,35 @@
 steps to run this repository ?
 
 clone the repository
-
+--------------------------------------------------------------------------------------------------------
 npm i
+---------------------------------------------------------------------------------------------------------
+RUN below script to create the table in the PostgreSQL database:
 
+1). create customer table
+
+CREATE TABLE IF NOT EXISTS public.customer
+(
+    customer_id uuid NOT NULL DEFAULT uuid_generate_v4(),
+    first_name character varying COLLATE pg_catalog."default" NOT NULL,
+    last_name character varying COLLATE pg_catalog."default" NOT NULL,
+    city character varying COLLATE pg_catalog."default" NOT NULL,
+    company character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT customer_pkey PRIMARY KEY (customer_id)
+)
+
+2).creatre users table
+
+CREATE TABLE IF NOT EXISTS public.users
+(
+    user_id uuid NOT NULL DEFAULT uuid_generate_v4(),
+    email character varying COLLATE pg_catalog."default" NOT NULL,
+    password character varying COLLATE pg_catalog."default" NOT NULL,
+    role character varying COLLATE pg_catalog."default" NOT NULL,
+    username character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT users_pkey PRIMARY KEY (user_id)
+)
+----------------------------------------------------------------------------------------------------------
 1)register
 http://localhost:3000/user/register
 
@@ -16,7 +42,7 @@ payload:
     "role":"manager"
 }
 
-
+----------------------------------------------------------------------------------------------------------
 2)login
 http://localhost:3000/user/login
 
@@ -27,7 +53,9 @@ payload:
 }
 (gives token)
 
-
+--------------------------------------------------------------------------------------------------------------
+                                    *using the authorization middleware*
+--------------------------------------------------------------------------------------------------------------
 CRUD :
 
 createCustomer:POST
@@ -41,6 +69,8 @@ payload:
     "company":"xyz"
 }
 
+---------------------------------------------------------------------------------------------------------------
+
 getAllCustomer:GET
 http://localhost:3000/customer/
 
@@ -52,12 +82,13 @@ payload:
     "take":20
 }
 
+---------------------------------------------------------------------------------------------------------------
 
 getCustoemrById:GET
 (Note:pass the customer_id as the parameter in the url)
 http://localhost:3000/customer/56a2ba0a-1882-4973-9df2-b93c94242486
 
-
+---------------------------------------------------------------------------------------------------------------
 
 createMultipleCustomer:POST
 http://localhost:3000/customer/create-multiple
@@ -88,6 +119,8 @@ payload:
 ]
 }
 
+------------------------------------------------------------------------------------------------------------------
+
 updateCustomer:PUT
 (Note:pass the customer_id as the parameter in the url)
 http://localhost:3000/customer/56a2ba0a-1882-4973-9df2-b93c94242486
@@ -100,12 +133,13 @@ payload:
     "company":"xyz"
 }
 
+-------------------------------------------------------------------------------------------------------------------
 
 delete the Customer:DELETE
 
 http://localhost:3000/customer/56a2ba0a-1882-4973-9df2-b93c94242486
 
-using the authorization middleware
+
 
 
 
